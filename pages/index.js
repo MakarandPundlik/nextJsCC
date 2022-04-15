@@ -1,6 +1,19 @@
 import Head from "next/head";
 import React from "react";
-export default function Home() {
+import { ArticleList } from "../components/ArticleList";
+export const getStaticProps = async () => {
+  const res = await fetch(
+    "https://jsonplaceholder.typicode.com/posts?_limit=6"
+  );
+  const articles = await res.json();
+  return {
+    props: {
+      articles,
+    },
+  };
+};
+export default function Home({ articles }) {
+  console.log(articles);
   return (
     <div>
       <Head>
@@ -10,8 +23,7 @@ export default function Home() {
           content="web dev,development,programming,coding"
         />
       </Head>
-      Next Js is better than React
-      <h1>Hello world</h1>
+      <ArticleList articles={articles} />
     </div>
   );
 }
